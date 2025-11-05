@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.br.tc</groupId>
-	<artifactId>api-pedidos</artifactId>
+	<artifactId>api-orders-tc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>api-pedidos</name>
+	<name>api-orders-tc</name>
 	<description>Order Api</description>
 	<url/>
 	<licenses>

@@ -23,10 +23,11 @@ public class OrderServiceImp implements OrderServicePort {
     @Transactional
     @Override
     public Order createAndCheckout(Order order) {
-        BigDecimal totalPrice = order.getItems().stream()
-                .map(i -> BigDecimal.valueOf(i.getAmount()).multiply(i.getUnitPrice()))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        order.setTotalPrice(totalPrice);
+        //MELHORIA -- FAZER CHAMADA PARA API DE PRODUTOS, PARA PEGAR O UNIT_PRICE E CALCULAR
+//        BigDecimal totalPrice = order.getItems().stream()
+//                .map(i -> BigDecimal.valueOf(i.getAmount()).multiply(i.getUnitPrice()))
+//                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        order.setTotalPrice(order.getTotalPrice());
         order.setStatus(OrderStatus.RECEIVED);
 
         return orderRepository.create(order);

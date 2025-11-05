@@ -6,15 +6,15 @@ public class OrderItem {
 
     private Long id;
     private Order order;
-    private Product product;
+    private Long productId;
     private Integer amount;
     private BigDecimal unitPrice;
     private String notes;
 
-    public OrderItem(Long id, Order order, Product product, Integer amount, BigDecimal unitPrice, String notes) {
+    public OrderItem(Long id, Order order, Long productId, Integer amount, BigDecimal unitPrice, String notes) {
         this.id = id;
         this.order = order;
-        this.product = product;
+        this.productId = productId;
         this.amount = amount;
         this.unitPrice = unitPrice;
         this.notes = notes;
@@ -36,12 +36,12 @@ public class OrderItem {
         this.order = order;
     }
 
-    public Product getProduct() {
-        return product;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public Integer getAmount() {
