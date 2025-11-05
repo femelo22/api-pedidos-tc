@@ -23,9 +23,8 @@ public class OrderItemEntity {
     @JoinColumn(name = "order_id", nullable = false, updatable = false)
     private OrderEntity order;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false, updatable = false)
-    private Integer productId;
+    @Column(name = "product_id", nullable = false)
+    private Long productId;
 
     @Column(name = "amount")
     private Integer amount;

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name = "api-pagamentos", path = "${url.api-pagamento}")
 public interface PaymentClient {
 
-    @PostMapping("/mercadopago/qrcode")
+    @PostMapping("/pagamentos")
     String gerarQrCode(@RequestBody Order order);
 
     @PutMapping("/atualizar")

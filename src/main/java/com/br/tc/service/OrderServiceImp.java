@@ -28,9 +28,6 @@ public class OrderServiceImp implements OrderServicePort {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         order.setTotalPrice(totalPrice);
         order.setStatus(OrderStatus.RECEIVED);
-        //TODO: Sending to asynchronous processing queue (Future)
-        //var messageDTO = new OrderCheckoutDTO(checkout);
-        //sqsServicePort.publishQueue(messageDTO);
 
         return orderRepository.create(order);
     }

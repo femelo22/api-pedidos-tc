@@ -9,22 +9,20 @@ import java.util.List;
 public class Order {
 
     private Long id;
-    private Client client;
+    private Long clientId;
     private String cpf;
     private OrderStatus status;
     private BigDecimal totalPrice;
     private LocalDateTime date;
-    private Payment payment;
     private List<OrderItem> items;
 
-    public Order(Long id, Client client, String cpf, OrderStatus status, BigDecimal totalPrice, LocalDateTime date, Payment payment, List<OrderItem> items) {
+    public Order(Long id, Long clientId, String cpf, OrderStatus status, BigDecimal totalPrice, LocalDateTime date, List<OrderItem> items) {
         this.id = id;
-        this.client = client;
+        this.clientId = clientId;
         this.cpf = cpf;
         this.status = status;
         this.totalPrice = totalPrice;
         this.date = date;
-        this.payment = payment;
         this.items = items;
     }
 
@@ -34,14 +32,6 @@ public class Order {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
     }
 
     public String getCpf() {
@@ -76,12 +66,12 @@ public class Order {
         this.date = date;
     }
 
-    public Payment getPayment() {
-        return payment;
+    public Long getClientId() {
+        return clientId;
     }
 
-    public void setPayment(Payment payment) {
-        this.payment = payment;
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 
     public List<OrderItem> getItems() {

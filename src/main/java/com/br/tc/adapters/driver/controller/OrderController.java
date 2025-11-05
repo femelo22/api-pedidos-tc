@@ -1,5 +1,6 @@
 package com.br.tc.adapters.driver.controller;
 
+import com.br.tc.adapters.driver.mercadopago.MercadoPagoAdapter;
 import com.br.tc.adapters.dtos.order.OrderCheckoutRequestDTO;
 import com.br.tc.adapters.dtos.order.OrderCheckoutResponseDTO;
 import com.br.tc.adapters.dtos.order.OrderFilter;
@@ -42,8 +43,13 @@ public class OrderController {
     private OrderMapper orderMapper;
 
     @Autowired
-    private PaymentPort paymentPort;
+    private MercadoPagoAdapter mpAdapter;
 
+    public OrderController(OrderServicePort service, OrderMapper orderMapper, MercadoPagoAdapter mpAdapter) {
+        this.service = service;
+        this.orderMapper = orderMapper;
+        this.mpAdapter = mpAdapter;
+    }
 
     @Operation(summary = "Creates and Checkout an order", description = "Creates and Checkout an order.")
     @ApiResponse(responseCode = "200", description = "Ok", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Order.class)))
@@ -52,18 +58,10 @@ public class OrderController {
     public ResponseEntity<OrderCheckoutResponseDTO> checkout(@Valid @RequestBody OrderCheckoutRequestDTO orderCheckoutRequestDTO) {
 
         Order orderToCreate = orderMapper.orderCheckoutRequestDTOToOrder(orderCheckoutRequestDTO);
-        Payment payment = new Payment(null, null, orderCheckoutRequestDTO.paymentType(), PaymentStatus.CREATED, null);
-        orderToCreate.setPayment(payment);
+
         Order orderCreated = this.service.createAndCheckout(orderToCreate);
 
-        //Integração mercado pago e gravação de qrcode
-        //TODO: Mudar lógica.. chamar o serivço de pagamentos para gerar o QRCode
-        String  qrCode = paymentPort.gerarQrCode(orderCreated);
-        orderCreated.getPayment().setQrCode(qrCode);
-
-        //TODO: Mudar lógica.. chamar serviço de pagamentos para atualizar o status do Pagamento
-        Payment paymentUpdated = paymentPort.updatePayment(orderCreated.getPayment());
-        orderCreated.setPayment(paymentUpdated);
+        //Chama para [POST] /pagamento --> paymentType + order_id
 
         return ResponseEntity.ok().body(new OrderCheckoutResponseDTO("Pedido enviado para fila de processamento.", orderMapper.orderToOrderResponseDTO(orderCreated)));
     }

@@ -24,9 +24,8 @@ public class OrderEntity {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "client_id")
-    private Integer clientId;
+    @Column(name = "id_client")
+    private Long clientId;
 
     @Column(name = "cpf")
     private String cpf;
@@ -41,9 +40,6 @@ public class OrderEntity {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime date;
-
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private String paymentType;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
