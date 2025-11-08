@@ -1,17 +1,11 @@
 package com.br.tc.adapters.driver.controller;
 
-import com.br.tc.adapters.driver.mercadopago.MercadoPagoAdapter;
-import com.br.tc.adapters.dtos.order.OrderCheckoutRequestDTO;
-import com.br.tc.adapters.dtos.order.OrderCheckoutResponseDTO;
-import com.br.tc.adapters.dtos.order.OrderFilter;
-import com.br.tc.adapters.dtos.order.OrderResponseDTO;
+import com.br.tc.adapters.driver.mercadopago.PaymentAdapter;
+import com.br.tc.adapters.dtos.order.*;
 import com.br.tc.adapters.mappers.OrderMapper;
 import com.br.tc.core.model.Order;
-import com.br.tc.core.model.Payment;
 import com.br.tc.core.model.enums.OrderStatus;
-import com.br.tc.core.model.enums.PaymentStatus;
 import com.br.tc.core.ports.service.OrderServicePort;
-import com.br.tc.core.ports.service.PaymentPort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -43,12 +37,12 @@ public class OrderController {
     private OrderMapper orderMapper;
 
     @Autowired
-    private MercadoPagoAdapter mpAdapter;
+    private PaymentAdapter paymentAdapter;
 
-    public OrderController(OrderServicePort service, OrderMapper orderMapper, MercadoPagoAdapter mpAdapter) {
+    public OrderController(OrderServicePort service, OrderMapper orderMapper, PaymentAdapter paymentAdapter) {
         this.service = service;
         this.orderMapper = orderMapper;
-        this.mpAdapter = mpAdapter;
+        this.paymentAdapter = paymentAdapter;
     }
 
     @Operation(summary = "Creates and Checkout an order", description = "Creates and Checkout an order.")
@@ -61,7 +55,7 @@ public class OrderController {
 
         Order orderCreated = this.service.createAndCheckout(orderToCreate);
 
-        //Chama para [POST] /pagamento --> paymentType + order_id
+        paymentAdapter.gerarPagamento(new OrderPayment(orderCheckoutRequestDTO.paymentType(), orderCreated.getId()));
 
         return ResponseEntity.ok().body(new OrderCheckoutResponseDTO("Pedido enviado para fila de processamento.", orderMapper.orderToOrderResponseDTO(orderCreated)));
     }
