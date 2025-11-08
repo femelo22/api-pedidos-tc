@@ -31,8 +31,6 @@ public class OrderRepository implements OrderRepositoryPort {
 
         OrderEntity orderEntityToSave = orderMapper.orderToOrderEntity(order);
         orderEntityToSave.getItems().forEach(orderItemEntity -> orderItemEntity.setOrder(orderEntityToSave));
-//        orderEntityToSave.getPayment().setOrder(orderEntityToSave);
-        orderEntityToSave.setPaymentType(orderEntityToSave.getPaymentType());
         OrderEntity orderEntitySaved = this.springOrderRepository.save(orderEntityToSave);
 
         return orderMapper.orderEntityToOrder(orderEntitySaved);
