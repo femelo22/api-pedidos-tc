@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name = "api-pagamentos", path = "${url.api-pagamento}")
 public interface PaymentClient {
 
-    @PostMapping("/pagamento")
+    @PostMapping("/submit")
     String enviarPagamento(@RequestBody OrderPayment newPayment);
 
     @PutMapping("/atualizar")
